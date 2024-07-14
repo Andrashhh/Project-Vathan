@@ -554,7 +554,7 @@ namespace Ricochet
         private void HandleRemoveComponent()
         {
             CapsuleCollider tmpCapsule = gameObject.GetComponent<CapsuleCollider>();
-            DestroyImmediate(this);
+            //DestroyImmediate(this);
             DestroyImmediate(tmpCapsule);
         }
 

@@ -28,10 +28,10 @@ public class Health : MonoBehaviour
     }
 
     public void TakeDamage(float damageAmount) {
-        if (m_CurrentHealth > 0) {
+        if (m_CurrentHealth > 0f) {
             m_CurrentHealth -= damageAmount;
         }
-        else {
+        if (m_CurrentHealth <= 0f) {
             Death();
         }
     }
@@ -45,11 +45,12 @@ public class Health : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider other) {
-        if(other.gameObject.GetComponent<Damage>() !) {
+        if(other.gameObject.GetComponent<Damage>() != null) {
             var dmg = other.gameObject.GetComponent<Damage>();
-            dmg.SetDamage(100f);
+            dmg.SetDamage(10f);
             TakeDamage(dmg.DamageAmount);
-            Debug.Log("AUCH");
+            Debug.Log("AUCH " + m_CurrentHealth);
         }
+
     }
 }
