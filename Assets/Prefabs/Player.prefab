@@ -126,6 +126,8 @@ GameObject:
   - component: {fileID: 927881051822727525}
   - component: {fileID: 7864102828329328019}
   - component: {fileID: 4737213334760865469}
+  - component: {fileID: 7687193462427536373}
+  - component: {fileID: 3488243868977902218}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -163,11 +165,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Character: {fileID: 644490143871237445}
   characterCamera: {fileID: 0}
-  m_Look: {x: 0, y: 0}
-  m_Fire: 0
-  m_FireAlt: 0
-  m_Jump: 0
-  m_Crouch: 0
 --- !u!114 &4737213334760865469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180,16 +177,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdde3aa40d482df4d902c3e9c32b23f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PlayerActionAsset: {fileID: -944628639613478452, guid: afa8ca2efe6f5d84394ef0507bb8dc56,
+  PlayerActionAsset: {fileID: -944628639613478452, guid: afa8ca2efe6f5d84394ef0507bb8dc56,
     type: 3}
   m_ActionMapName: Player
-  m_Move: Move
-  m_Look: Look
-  m_Jump: Jump
-  m_Crouch: Crouch
-  m_Fire: Fire
-  m_FireAlt: FireAlt
+  m_MoveRef: Move
+  m_LookRef: Look
+  m_JumpRef: Jump
+  m_CrouchRef: Crouch
+  m_FireRef: Fire
+  m_FireAltRef: FireAlt
   m_Sensitivity: 1
+  m_State: {fileID: 0}
+--- !u!114 &7687193462427536373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2135538483631737991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcb83c778ecdafe4798bb7b4da669bc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Entity: {fileID: 11400000, guid: 562469083ba43754d9a3fd5a062593b7, type: 2}
+--- !u!114 &3488243868977902218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2135538483631737991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 695b13afcd4099a4190bd671460d6821, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6059065898845422217
 GameObject:
   m_ObjectHideFlags: 0

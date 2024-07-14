@@ -29,14 +29,12 @@ namespace Ricochet.Kinematic
 
         private void Update()
         {
-            HandleCharacterInput(playerInputHandler.moveInput, playerInputHandler.jumpInput, playerInputHandler.crouchInput, playerInputHandler.fireInput);
+            HandleCharacterInput(playerInputHandler.MoveInput, playerInputHandler.JumpInput, playerInputHandler.CrouchInput, playerInputHandler.FireInput);
             RotateWithPlayer();
-            
-
         }
 
         private void LateUpdate() {
-            HandleCameraInput(playerInputHandler.lookInput);
+            HandleCameraInput(playerInputHandler.LookInput);
         }
 
         private void ApplyCamera() {
@@ -77,20 +75,10 @@ namespace Ricochet.Kinematic
 
             // Apply inputs to the camera
             characterCamera.UpdateWithInput(Time.deltaTime, scrollInput, lookInputVector);
-
         }
 
         private void HandleCharacterInput(Vector2 move, bool jump, bool crouch, bool fire) {
             PlayerCharacterInputs characterInputs = new PlayerCharacterInputs();
-
-            if(fire) {
-                if(Cursor.lockState == CursorLockMode.Locked) {
-                    Cursor.lockState = CursorLockMode.None;
-                }
-                else {
-                    Cursor.lockState = CursorLockMode.Locked;
-                }
-            }
 
             // Build the CharacterInputs struct
             characterInputs.CameraRotation = characterCamera ? characterCamera.Transform.rotation : Quaternion.identity;

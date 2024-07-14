@@ -1,13 +1,10 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerInputHandler : MonoBehaviour {
     [Header("Input Action Asset")]
-    public InputActionAsset m_PlayerActionAsset;
+    public InputActionAsset PlayerActionAsset;
 
     [Header("Action Map Name References")]
     [SerializeField] private string m_ActionMapName = "Player";
@@ -27,18 +24,51 @@ public class PlayerInputHandler : MonoBehaviour {
     private InputAction m_FireAction;
     private InputAction m_FireAltAction;
 
-    public Vector2 moveInput { get; private set; }
-    public Vector2 lookInput { get; private set; }
-    public bool jumpInput { get; private set; }
-    public bool crouchInput { get; private set; }
-    public bool fireInput { get; private set; }
-    public bool fireAltInput { get; private set; }
+    public Vector2 MoveInput { get; private set; }
+    public Vector2 LookInput { get; private set; }
+    public bool JumpInput { get; private set; }
+    public bool CrouchInput { get; private set; }
+    public bool FireInput { get; private set; }
+    public bool FireAltInput { get; private set; }
 
     [Header("Settings")]
     [Range(0f, 10f)]
     public float m_Sensitivity = 1f;
 
+    [SerializeField] private GameState m_State;
+
     void OnEnable() {
+        SubEvents();
+    }
+
+    void OnDisable() {
+        UnSubEvents();
+    }
+
+
+    void Awake() {
+        m_State = FindObjectOfType<GameState>();
+        RegisterAction();
+        AddInputValue();
+    }
+
+    void Update() {
+        AddTriggerInputValue();
+    }
+
+    void SubEvents() {
+        m_State.OnGameTestStart += ConnectInputs;
+        m_State.OnGamePause += DisconnectInputs;
+        m_State.OnGameResume += ConnectInputs;
+        m_State.OnGameLost += DisconnectInputs;
+    }
+    void UnSubEvents() {
+        m_State.OnGameTestStart -= ConnectInputs;
+        m_State.OnGamePause -= DisconnectInputs;
+        m_State.OnGameResume -= ConnectInputs;
+    }
+
+    void ConnectInputs() {
         m_MoveAction.Enable();
         m_LookAction.Enable();
         m_JumpAction.Enable();
@@ -46,7 +76,7 @@ public class PlayerInputHandler : MonoBehaviour {
         m_FireAction.Enable();
         m_FireAltAction.Enable();
     }
-    void OnDisable() {
+    void DisconnectInputs() {
         m_MoveAction.Disable();
         m_LookAction.Disable();
         m_JumpAction.Disable();
@@ -55,41 +85,30 @@ public class PlayerInputHandler : MonoBehaviour {
         m_FireAltAction.Disable();
     }
 
-    void Awake() {
-
-        RegisterAction();
-        AddInputValue();
-    }
-
-    void Update() {
-
-        AddTriggerInputValue();
-    }
-
-    private void RegisterAction() {
-        m_MoveAction = m_PlayerActionAsset.FindActionMap(m_ActionMapName).FindAction(m_MoveRef);
-        m_LookAction = m_PlayerActionAsset.FindActionMap(m_ActionMapName).FindAction(m_LookRef);
-        m_JumpAction = m_PlayerActionAsset.FindActionMap(m_ActionMapName).FindAction(m_JumpRef);
-        m_CrouchAction = m_PlayerActionAsset.FindActionMap(m_ActionMapName).FindAction(m_CrouchRef);
-        m_FireAction = m_PlayerActionAsset.FindActionMap(m_ActionMapName).FindAction(m_FireRef);
-        m_FireAltAction = m_PlayerActionAsset.FindActionMap(m_ActionMapName).FindAction(m_FireAltRef);
+    void RegisterAction() {
+        m_MoveAction = PlayerActionAsset.FindActionMap(m_ActionMapName).FindAction(m_MoveRef);
+        m_LookAction = PlayerActionAsset.FindActionMap(m_ActionMapName).FindAction(m_LookRef);
+        m_JumpAction = PlayerActionAsset.FindActionMap(m_ActionMapName).FindAction(m_JumpRef);
+        m_CrouchAction = PlayerActionAsset.FindActionMap(m_ActionMapName).FindAction(m_CrouchRef);
+        m_FireAction = PlayerActionAsset.FindActionMap(m_ActionMapName).FindAction(m_FireRef);
+        m_FireAltAction = PlayerActionAsset.FindActionMap(m_ActionMapName).FindAction(m_FireAltRef);
     }
 
     void AddTriggerInputValue() {
-        jumpInput = m_JumpAction.triggered;
-        fireInput = m_FireAction.triggered;
-        fireAltInput = m_FireAltAction.triggered;
+        JumpInput = m_JumpAction.triggered;
+        FireInput = m_FireAction.triggered;
+        FireAltInput = m_FireAltAction.triggered;
     }
 
     void AddInputValue() {
-        m_MoveAction.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
-        m_MoveAction.canceled += ctx => moveInput = Vector2.zero;
+        m_MoveAction.performed += ctx => MoveInput = ctx.ReadValue<Vector2>();
+        m_MoveAction.canceled += ctx => MoveInput = Vector2.zero;
 
-        m_LookAction.performed += ctx => lookInput = ctx.ReadValue<Vector2>() * (m_Sensitivity * 0.1f);
-        m_LookAction.canceled += ctx => lookInput = Vector2.zero;
+        m_LookAction.performed += ctx => LookInput = ctx.ReadValue<Vector2>() * (m_Sensitivity * 0.1f);
+        m_LookAction.canceled += ctx => LookInput = Vector2.zero;
 
-        m_CrouchAction.performed += ctx => crouchInput = true;
-        m_CrouchAction.canceled += ctx => crouchInput = false;
+        m_CrouchAction.performed += ctx => CrouchInput = true;
+        m_CrouchAction.canceled += ctx => CrouchInput = false;
 
     }
 }
