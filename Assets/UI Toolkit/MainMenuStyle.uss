@@ -1,0 +1,10 @@
+.header {
+}
+
+.button {
+    align-items: center;
+    align-self: flex-start;
+    top: 300px;
+    margin-bottom: 50px;
+    margin-left: 88px;
+}
