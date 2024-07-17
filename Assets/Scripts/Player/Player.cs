@@ -29,12 +29,12 @@ namespace Ricochet.Kinematic
 
         private void Update()
         {
-            HandleCharacterInput(playerInputHandler.MoveInput, playerInputHandler.JumpInput, playerInputHandler.CrouchInput, playerInputHandler.FireInput);
+            HandleCharacterInput(playerInputHandler.MoveInput, playerInputHandler.JumpInput, playerInputHandler.CrouchInput, playerInputHandler.FireInput, playerInputHandler.IsInputEnabled);
             RotateWithPlayer();
         }
 
         private void LateUpdate() {
-            HandleCameraInput(playerInputHandler.LookInput);
+            HandleCameraInput(playerInputHandler.LookInput, playerInputHandler.IsInputEnabled);
         }
 
         private void ApplyCamera() {
@@ -57,7 +57,7 @@ namespace Ricochet.Kinematic
                 characterCamera.PlanarDirection = Vector3.ProjectOnPlane(characterCamera.PlanarDirection, Character.Motor.CharacterUp).normalized;
             }
         }
-        private void HandleCameraInput(Vector2 look) {
+        private void HandleCameraInput(Vector2 look, bool input) {
             // Create the look input vector for the camera
             float mouseLookAxisUp = look.y;
             float mouseLookAxisRight = look.x;
@@ -74,10 +74,12 @@ namespace Ricochet.Kinematic
 
 
             // Apply inputs to the camera
-            characterCamera.UpdateWithInput(Time.deltaTime, scrollInput, lookInputVector);
+            if(input) {
+                characterCamera.UpdateWithInput(Time.deltaTime, scrollInput, lookInputVector);
+            }
         }
 
-        private void HandleCharacterInput(Vector2 move, bool jump, bool crouch, bool fire) {
+        private void HandleCharacterInput(Vector2 move, bool jump, bool crouch, bool fire, bool input) {
             PlayerCharacterInputs characterInputs = new PlayerCharacterInputs();
 
             // Build the CharacterInputs struct
@@ -89,7 +91,10 @@ namespace Ricochet.Kinematic
             characterInputs.CrouchUp = crouch;
 
             // Apply inputs to character
-            Character.SetInputs(ref characterInputs);
+            if(input) {
+                Character.SetInputs(ref characterInputs);
+            }
+            
         }
     }
 }

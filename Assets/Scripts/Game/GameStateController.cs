@@ -5,10 +5,11 @@ using UnityEngine;
 public class GameStateController : MonoBehaviour
 {
     private GameUIInput m_Input;
-    private GameState gameState;
+    private GameState m_GameState;
 
     void InitializeComponents() {
         m_Input = gameObject.GetComponent<GameUIInput>();
+        m_GameState = gameObject.GetComponent<GameState>();
     }
 
     void Awake() {
@@ -21,7 +22,7 @@ public class GameStateController : MonoBehaviour
 
     void ManageInputUI(GameUIInput input) {
         if(input.MenuKey) {
-            switch(gameState.CurrentState) {
+            switch(m_GameState.CurrentState) {
                 case GameStateEnum.Idle:
                     Debug.Log("Bing Chilling Idle State");
                     break;
@@ -32,21 +33,16 @@ public class GameStateController : MonoBehaviour
                     SetToResume();
                     break;
                 default:
+                    gameObject.GetComponent<MeshRenderer>().material.color = Color.magenta;
                     break;
             }
         }
     }
 
     void SetToPause() {
-        gameState.PauseGame();
+        m_GameState.PauseGame();
     }
     void SetToResume() {
-        gameState.ResumeGame();
-    }
-
-    void OnValidate() {
-        if(gameState == null) {
-            gameState = gameObject.GetComponent<GameState>();
-        }
+        m_GameState.ResumeGame();
     }
 }

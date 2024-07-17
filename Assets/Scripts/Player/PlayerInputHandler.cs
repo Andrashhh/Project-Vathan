@@ -31,6 +31,8 @@ public class PlayerInputHandler : MonoBehaviour {
     public bool FireInput { get; private set; }
     public bool FireAltInput { get; private set; }
 
+    public bool IsInputEnabled;
+
     [Header("Settings")]
     [Range(0f, 10f)]
     public float m_Sensitivity = 1f;
@@ -38,10 +40,24 @@ public class PlayerInputHandler : MonoBehaviour {
     [SerializeField] private GameState m_State;
 
     void OnEnable() {
+        m_MoveAction.Enable();
+        m_LookAction.Enable();
+        m_JumpAction.Enable();
+        m_CrouchAction.Enable();
+        m_FireAction.Enable();
+        m_FireAltAction.Enable();
+
         SubEvents();
     }
 
     void OnDisable() {
+        m_MoveAction.Disable();
+        m_LookAction.Disable();
+        m_JumpAction.Disable();
+        m_CrouchAction.Disable();
+        m_FireAction.Disable();
+        m_FireAltAction.Disable();
+
         UnSubEvents();
     }
 
@@ -57,32 +73,23 @@ public class PlayerInputHandler : MonoBehaviour {
     }
 
     void SubEvents() {
-        m_State.OnGameTestStart += ConnectInputs;
-        m_State.OnGamePause += DisconnectInputs;
-        m_State.OnGameResume += ConnectInputs;
-        m_State.OnGameLost += DisconnectInputs;
+        m_State.OnGameTestStart += EnableInputs;
+        m_State.OnGamePause += DisableInputs;
+        m_State.OnGameResume += EnableInputs;
+        m_State.OnGameLost += DisableInputs;
     }
     void UnSubEvents() {
-        m_State.OnGameTestStart -= ConnectInputs;
-        m_State.OnGamePause -= DisconnectInputs;
-        m_State.OnGameResume -= ConnectInputs;
+        m_State.OnGameTestStart -= EnableInputs;
+        m_State.OnGamePause -= DisableInputs;
+        m_State.OnGameResume -= EnableInputs;
+        m_State.OnGameLost -= DisableInputs;
     }
 
-    void ConnectInputs() {
-        m_MoveAction.Enable();
-        m_LookAction.Enable();
-        m_JumpAction.Enable();
-        m_CrouchAction.Enable();
-        m_FireAction.Enable();
-        m_FireAltAction.Enable();
+    void EnableInputs() {
+        IsInputEnabled = true;
     }
-    void DisconnectInputs() {
-        m_MoveAction.Disable();
-        m_LookAction.Disable();
-        m_JumpAction.Disable();
-        m_CrouchAction.Disable();
-        m_FireAction.Disable();
-        m_FireAltAction.Disable();
+    void DisableInputs() {
+        IsInputEnabled = false;
     }
 
     void RegisterAction() {

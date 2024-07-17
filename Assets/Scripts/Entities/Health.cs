@@ -1,17 +1,21 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Health : MonoBehaviour
 {
     private float m_CurrentHealth;
     private float m_MaxHealth;
 
+    public event Action<float> OnHealthChange;
+
     public float CurrentHealth {
         get { return m_CurrentHealth; }
-        private set { 
-            m_CurrentHealth = value > m_MaxHealth? m_MaxHealth : m_CurrentHealth;
+        private set {
+            m_CurrentHealth = value > m_MaxHealth ? m_MaxHealth : m_CurrentHealth;
         }
     }
     public float MaxHealth {
@@ -19,19 +23,20 @@ public class Health : MonoBehaviour
         private set { m_MaxHealth = value; }
     }
 
-    void Awake() {
-
-    }
     void Start() {
         m_MaxHealth = gameObject.GetComponent<EntityPropertyHandler>().MaxHealth;
         m_CurrentHealth = m_MaxHealth;
     }
 
+    void Update() {
+        
+    }
+
     public void TakeDamage(float damageAmount) {
-        if (m_CurrentHealth > 0f) {
+        if (m_CurrentHealth > 0.1f) {
             m_CurrentHealth -= damageAmount;
         }
-        if (m_CurrentHealth <= 0f) {
+        if(m_CurrentHealth <= 0f) {
             Death();
         }
     }
@@ -49,6 +54,7 @@ public class Health : MonoBehaviour
             var dmg = other.gameObject.GetComponent<Damage>();
             dmg.SetDamage(10f);
             TakeDamage(dmg.DamageAmount);
+            OnHealthChange?.Invoke((m_CurrentHealth / m_MaxHealth) * 100f);
             Debug.Log("AUCH " + m_CurrentHealth);
         }
 

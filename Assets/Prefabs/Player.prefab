@@ -216,6 +216,7 @@ GameObject:
   - component: {fileID: 8966798009705534968}
   - component: {fileID: 5338398547469941183}
   - component: {fileID: 2080056844435201179}
+  - component: {fileID: 6441089572707835746}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -371,6 +372,7 @@ MonoBehaviour:
   m_CrouchRef: Crouch
   m_FireRef: Fire
   m_FireAltRef: FireAlt
+  IsInputEnabled: 0
   m_Sensitivity: 1
   m_State: {fileID: 0}
 --- !u!114 &5338398547469941183
@@ -396,6 +398,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 695b13afcd4099a4190bd671460d6821, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6441089572707835746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3592620939194194300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e33a9b5bf3c6de4998ad899b35a3579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6206455470799195518

@@ -1,0 +1,85 @@
+.button {
+    align-items: auto;
+    align-self: center;
+    top: auto;
+    margin-bottom: 10px;
+    justify-content: flex-start;
+}
+
+.unity-progress-bar__background {
+    width: 147px;
+    height: 11px;
+    border-top-left-radius: 1px;
+    border-top-right-radius: 1px;
+    border-bottom-right-radius: 1px;
+    border-bottom-left-radius: 1px;
+    opacity: 1;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    background-color: rgba(0, 0, 0, 0.31);
+}
+
+.unity-progress-bar__container {
+    min-height: 9px;
+    border-top-left-radius: 1px;
+    border-top-right-radius: 1px;
+    border-bottom-right-radius: 1px;
+    border-bottom-left-radius: 1px;
+    opacity: 1;
+}
+
+.unity-progress-bar__progress {
+    border-top-left-radius: 1px;
+    border-top-right-radius: 1px;
+    border-bottom-right-radius: 1px;
+    border-bottom-left-radius: 1px;
+    opacity: 1;
+}
+
+.healthBar {
+    top: 77%;
+    right: 78%;
+    position: absolute;
+    rotate: -88deg;
+    background-color: rgba(0, 0, 0, 0);
+    opacity: 1;
+    border-top-left-radius: 1px;
+    border-top-right-radius: 1px;
+    border-bottom-right-radius: 1px;
+    border-bottom-left-radius: 1px;
+}
+
+.staminaBar {
+    position: absolute;
+    top: 80%;
+    right: 75%;
+    rotate: -91deg;
+    background-color: rgba(0, 0, 0, 0);
+    border-top-left-radius: 1px;
+    border-top-right-radius: 1px;
+    border-bottom-right-radius: 1px;
+    border-bottom-left-radius: 1px;
+}
+
+.healthBar .unity-progress-bar__progress {
+    background-color: rgb(200, 0, 0);
+    opacity: 1;
+    border-top-left-radius: 1px;
+    border-top-right-radius: 1px;
+    border-bottom-right-radius: 1px;
+    border-bottom-left-radius: 1px;
+}
+
+.staminaBar .unity-progress-bar__progress {
+    background-color: rgb(0, 200, 0);
+    border-top-left-radius: 1px;
+    border-top-right-radius: 1px;
+    border-bottom-right-radius: 1px;
+    border-bottom-left-radius: 1px;
+}
+
+.button:hover {
+    background-color: rgb(231, 5, 5);
+}
