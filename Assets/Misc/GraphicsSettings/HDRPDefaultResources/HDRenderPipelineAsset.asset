@@ -144,8 +144,8 @@ MonoBehaviour:
       DLSSSharpness: 0
       fsrOverrideSharpness: 0
       fsrSharpness: 0.92
-      maxPercentage: 100
-      minPercentage: 100
+      maxPercentage: 15
+      minPercentage: 15
       dynResType: 1
       upsampleFilter: 1
       forceResolution: 0

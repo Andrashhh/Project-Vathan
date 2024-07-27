@@ -7,6 +7,8 @@ using UnityEngine.UIElements;
 
 public class Health : MonoBehaviour
 {
+
+
     private float m_CurrentHealth;
     private float m_MaxHealth;
 
@@ -50,13 +52,17 @@ public class Health : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider other) {
+
+    }
+    void OnTriggerStay(Collider other) {
+
+    }
+    void OnCollisionEnter(Collision other) {
         if(other.gameObject.GetComponent<Damage>() != null) {
             var dmg = other.gameObject.GetComponent<Damage>();
-            dmg.SetDamage(10f);
             TakeDamage(dmg.DamageAmount);
             OnHealthChange?.Invoke((m_CurrentHealth / m_MaxHealth) * 100f);
             Debug.Log("AUCH " + m_CurrentHealth);
         }
-
     }
 }

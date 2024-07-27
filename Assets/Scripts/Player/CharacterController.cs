@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Ricochet;
 using System;
+using UnityEngine.Windows;
 
 namespace Ricochet.Kinematic
 {
@@ -23,6 +24,7 @@ namespace Ricochet.Kinematic
         public float MoveAxisRight;
         public Quaternion CameraRotation;
         public bool JumpDown;
+        public bool DodgeDown;
         public bool CrouchDown;
         public bool CrouchUp;
     }
@@ -79,9 +81,14 @@ namespace Ricochet.Kinematic
         private RaycastHit[] _probedHits = new RaycastHit[8];
         private Vector3 _moveInputVector;
         private Vector3 _lookInputVector;
+        private Vector3 _cameraLookDir;
+        private bool _dodgeRequested = false;
+        private bool _dodgeConsumed = false;
+        private bool _dodgedThisFrame = false;
         private bool _jumpRequested = false;
         private bool _jumpConsumed = false;
         private bool _jumpedThisFrame = false;
+        private float _timeSinceDodgeRequested = Mathf.Infinity;
         private float _timeSinceJumpRequested = Mathf.Infinity;
         private float _timeSinceLastAbleToJump = 0f;
         private Vector3 _internalVelocityAdd = Vector3.zero;
@@ -90,6 +97,11 @@ namespace Ricochet.Kinematic
 
         private Vector3 lastInnerNormal = Vector3.zero;
         private Vector3 lastOuterNormal = Vector3.zero;
+
+        [ReadOnly] public Vector3 Velocity;
+        [ReadOnly] public bool DodgeAvailable = true;
+
+
 
         private void Awake()
         {
@@ -153,6 +165,7 @@ namespace Ricochet.Kinematic
             {
                 cameraPlanarDirection = Vector3.ProjectOnPlane(inputs.CameraRotation * Vector3.up, Motor.CharacterUp).normalized;
             }
+            _cameraLookDir = cameraPlanarDirection;
             Quaternion cameraPlanarRotation = Quaternion.LookRotation(cameraPlanarDirection, Motor.CharacterUp);
 
             switch (CurrentCharacterState)
@@ -179,21 +192,26 @@ namespace Ricochet.Kinematic
                             _jumpRequested = true;
                         }
 
-                        // Crouching input
-                        if (inputs.CrouchDown)
-                        {
-                            _shouldBeCrouching = true;
+                        //// Crouching input
+                        //if(inputs.CrouchDown) {
+                        //    _shouldBeCrouching = true;
 
-                            if (!_isCrouching)
-                            {
-                                _isCrouching = true;
-                                Motor.SetCapsuleDimensions(0.5f, CrouchedCapsuleHeight, CrouchedCapsuleHeight * 0.5f);
-                                MeshRoot.localScale = new Vector3(1f, 0.5f, 1f);
+                        //    if(!_isCrouching) {
+                        //        _isCrouching = true;
+                        //        Motor.SetCapsuleDimensions(0.5f, CrouchedCapsuleHeight, CrouchedCapsuleHeight * 0.5f);
+                        //        MeshRoot.localScale = new Vector3(1f, 0.5f, 1f);
+                        //    }
+                        //}
+                        //else if(!inputs.CrouchDown) {
+                        //    _shouldBeCrouching = false;
+                        //}
+
+                        //// Dodge Input
+                        if(inputs.DodgeDown) {
+                            if(!_dodgeConsumed) {
+                                _timeSinceDodgeRequested = 0f;
                             }
-                        }
-                        else if (!inputs.CrouchDown)
-                        {
-                            _shouldBeCrouching = false;
+                            _dodgeRequested = true;
                         }
 
                         break;
@@ -303,6 +321,7 @@ namespace Ricochet.Kinematic
 
                             // Smooth movement Velocity
                             currentVelocity = Vector3.Lerp(currentVelocity, targetMovementVelocity, 1f - Mathf.Exp(-StableMovementSharpness * deltaTime));
+                            Velocity = currentVelocity;
                         }
                         // Air movement
                         else
@@ -379,8 +398,40 @@ namespace Ricochet.Kinematic
                             }
                         }
 
+                        // Handle Dodge
+
+                        _dodgedThisFrame = false;
+                        DodgeAvailable = true;
+                        _timeSinceDodgeRequested += deltaTime;
+                        if(_dodgeRequested) {
+                            // See if we actually are allowed to jump
+                            if(!_dodgeConsumed && ((AllowJumpingWhenSliding ? Motor.GroundingStatus.FoundAnyGround : Motor.GroundingStatus.IsStableOnGround))) {
+
+                                // Calculate jump direction before ungrounding
+
+                                Vector3 dodgeDirection = Motor.CharacterForward;
+                                //Vector3 dodgeDirection = _cameraLookDir;
+                                
+                                if(Motor.GroundingStatus.FoundAnyGround && !Motor.GroundingStatus.IsStableOnGround) {
+                                    dodgeDirection = Motor.GroundingStatus.GroundNormal;
+                                }
+
+                                // Makes the character skip ground probing/snapping on its next update. 
+                                // If this line weren't here, the character would remain snapped to the ground when trying to jump. Try commenting this line out and see.
+                                Motor.ForceUnground();
+
+                                // Add to the return velocity and reset dodge state
+                                currentVelocity += (dodgeDirection * JumpUpSpeed * 2f);
+                                currentVelocity += (_moveInputVector * JumpScalableForwardSpeed);
+                                _dodgeRequested = false;
+                                _dodgeConsumed = true;
+                                _dodgedThisFrame = true;
+                                DodgeAvailable = false;
+                            }
+                        }
+
                         // Take into account additive velocity
-                        if (_internalVelocityAdd.sqrMagnitude > 0f)
+                        if (_internalVelocityAdd.sqrMagnitude > 3f)
                         {
                             currentVelocity += _internalVelocityAdd;
                             _internalVelocityAdd = Vector3.zero;
@@ -422,7 +473,21 @@ namespace Ricochet.Kinematic
                                 // Keep track of time since we were last able to jump (for grace period)
                                 _timeSinceLastAbleToJump += deltaTime;
                             }
+
                         }
+
+                        {
+                            if(_timeSinceDodgeRequested > 3f) {
+                                if(_dodgeRequested) {
+                                    _dodgeRequested = false;
+                                }
+                                if(!_dodgedThisFrame) {
+                                    _dodgeConsumed = false;
+                                    DodgeAvailable = true;
+                                }
+                            }
+                        }
+
 
                         // Handle uncrouching
                         if (_isCrouching && !_shouldBeCrouching)

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - KokTarget
   - Enemy
+  - VirtualCam
   layers:
   - Default
   - TransparentFX
@@ -13,16 +14,16 @@ TagManager:
   - 
   - Water
   - UI
+  - 
+  - 
+  - Terrain
+  - 
   - Player
+  - 
+  - 
+  - 
+  - 
   - Enemy
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
   - 
   - 
   - 

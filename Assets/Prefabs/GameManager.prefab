@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4650099151693878509}
   - component: {fileID: 9032283155149310246}
   - component: {fileID: 1770233893545951892}
+  - component: {fileID: 3087855361326596263}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -89,7 +90,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e9504dbef19a6847987ae26d5fcf4e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Document: {fileID: 1171476857239323795}
+--- !u!114 &3087855361326596263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 38708729662701323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 274a42205d7328d4a80756c82f3f9816, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SlimeS1: {fileID: 7498502874759049075, guid: 372b4fe53da1b1641b8287afd82f0219,
+    type: 3}
+  m_SlimeS2: {fileID: 6453338182640868302, guid: e17e9014f46302f40811abc3a6b1f0d3,
+    type: 3}
 --- !u!1 &3324844175219751292
 GameObject:
   m_ObjectHideFlags: 0
@@ -136,6 +152,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: aadd86144a9904144b9070bf29774614, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: a67d03e05058e8f4a95bc57945d0ec54,
-    type: 3}
+  sourceAsset: {fileID: 0}
   m_SortingOrder: 0

@@ -13,6 +13,7 @@ public class PlayerInputHandler : MonoBehaviour {
     [SerializeField] private string m_MoveRef = "Move";
     [SerializeField] private string m_LookRef = "Look";
     [SerializeField] private string m_JumpRef = "Jump";
+    [SerializeField] private string m_DodgeRef = "Dodge";
     [SerializeField] private string m_CrouchRef = "Crouch";
     [SerializeField] private string m_FireRef = "Fire";
     [SerializeField] private string m_FireAltRef = "FireAlt";
@@ -20,6 +21,7 @@ public class PlayerInputHandler : MonoBehaviour {
     private InputAction m_MoveAction;
     private InputAction m_LookAction;
     private InputAction m_JumpAction;
+    private InputAction m_DodgeAction;
     private InputAction m_CrouchAction;
     private InputAction m_FireAction;
     private InputAction m_FireAltAction;
@@ -27,6 +29,7 @@ public class PlayerInputHandler : MonoBehaviour {
     public Vector2 MoveInput { get; private set; }
     public Vector2 LookInput { get; private set; }
     public bool JumpInput { get; private set; }
+    public bool DodgeInput { get; private set; }
     public bool CrouchInput { get; private set; }
     public bool FireInput { get; private set; }
     public bool FireAltInput { get; private set; }
@@ -42,7 +45,7 @@ public class PlayerInputHandler : MonoBehaviour {
     void OnEnable() {
         m_MoveAction.Enable();
         m_LookAction.Enable();
-        m_JumpAction.Enable();
+        m_DodgeAction.Enable();
         m_CrouchAction.Enable();
         m_FireAction.Enable();
         m_FireAltAction.Enable();
@@ -53,7 +56,7 @@ public class PlayerInputHandler : MonoBehaviour {
     void OnDisable() {
         m_MoveAction.Disable();
         m_LookAction.Disable();
-        m_JumpAction.Disable();
+        m_DodgeAction.Disable();
         m_CrouchAction.Disable();
         m_FireAction.Disable();
         m_FireAltAction.Disable();
@@ -96,6 +99,7 @@ public class PlayerInputHandler : MonoBehaviour {
         m_MoveAction = PlayerActionAsset.FindActionMap(m_ActionMapName).FindAction(m_MoveRef);
         m_LookAction = PlayerActionAsset.FindActionMap(m_ActionMapName).FindAction(m_LookRef);
         m_JumpAction = PlayerActionAsset.FindActionMap(m_ActionMapName).FindAction(m_JumpRef);
+        m_DodgeAction = PlayerActionAsset.FindActionMap(m_ActionMapName).FindAction(m_DodgeRef);
         m_CrouchAction = PlayerActionAsset.FindActionMap(m_ActionMapName).FindAction(m_CrouchRef);
         m_FireAction = PlayerActionAsset.FindActionMap(m_ActionMapName).FindAction(m_FireRef);
         m_FireAltAction = PlayerActionAsset.FindActionMap(m_ActionMapName).FindAction(m_FireAltRef);
@@ -105,6 +109,7 @@ public class PlayerInputHandler : MonoBehaviour {
         JumpInput = m_JumpAction.triggered;
         FireInput = m_FireAction.triggered;
         FireAltInput = m_FireAltAction.triggered;
+        DodgeInput = m_DodgeAction.triggered;
     }
 
     void AddInputValue() {

@@ -1,5 +1,5 @@
 {
-    "name": "MyInputs",
+    "name": "InputAsset",
     "maps": [
         {
             "name": "Player",
@@ -45,6 +45,15 @@
                     "name": "Jump",
                     "type": "Button",
                     "id": "f4122386-8747-4895-b26a-9df921eeb8ed",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Dodge",
+                    "type": "Button",
+                    "id": "ee05d053-d82e-44cd-a0b1-b306caa24b12",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -238,7 +247,7 @@
                 {
                     "name": "",
                     "id": "1f701b93-1b47-4c8d-9a49-e67a60d69fde",
-                    "path": "<Keyboard>/leftCtrl",
+                    "path": "<Keyboard>/c",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -265,6 +274,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "FireAlt",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5ceceb65-4541-4e45-9e35-bdaa02c79450",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Dodge",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

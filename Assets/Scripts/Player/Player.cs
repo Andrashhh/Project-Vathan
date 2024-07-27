@@ -8,6 +8,7 @@ using System;
 using UnityEngine.Rendering.VirtualTexturing;
 using Unity.VisualScripting;
 using UnityEngine.Windows;
+using Cinemachine;
 
 namespace Ricochet.Kinematic
 {
@@ -16,9 +17,11 @@ namespace Ricochet.Kinematic
         public CharacterCamera characterCamera;
 
         private PlayerInputHandler playerInputHandler;
+        private Stamina m_Stamina;
 
         void Awake() {
             playerInputHandler = gameObject.GetComponent<PlayerInputHandler>();
+            m_Stamina = GetComponent<Stamina>();
         }
 
         private void Start()
@@ -29,7 +32,9 @@ namespace Ricochet.Kinematic
 
         private void Update()
         {
-            HandleCharacterInput(playerInputHandler.MoveInput, playerInputHandler.JumpInput, playerInputHandler.CrouchInput, playerInputHandler.FireInput, playerInputHandler.IsInputEnabled);
+            HandleCharacterInput(playerInputHandler.MoveInput, playerInputHandler.JumpInput,
+                playerInputHandler.DodgeInput && m_Stamina.CanDodge, playerInputHandler.CrouchInput,
+                playerInputHandler.FireInput, playerInputHandler.IsInputEnabled);
             RotateWithPlayer();
         }
 
@@ -79,7 +84,7 @@ namespace Ricochet.Kinematic
             }
         }
 
-        private void HandleCharacterInput(Vector2 move, bool jump, bool crouch, bool fire, bool input) {
+        private void HandleCharacterInput(Vector2 move, bool jump, bool dodge, bool crouch, bool fire, bool input) {
             PlayerCharacterInputs characterInputs = new PlayerCharacterInputs();
 
             // Build the CharacterInputs struct
@@ -87,6 +92,7 @@ namespace Ricochet.Kinematic
             characterInputs.MoveAxisForward = move.y;
             characterInputs.MoveAxisRight = move.x;
             characterInputs.JumpDown = jump;
+            characterInputs.DodgeDown = dodge;
             characterInputs.CrouchDown = crouch;
             characterInputs.CrouchUp = crouch;
 
